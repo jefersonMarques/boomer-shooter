@@ -111,3 +111,17 @@ O multiplayer será considerado somente após o núcleo single-player funcionar.
 | Referências confundidas com licença de conteúdo | Criar assets originais e registrar licenças |
 
 A documentação estabelece o objetivo criativo, mas não substitui especificações técnicas, testes de usabilidade, estimativas nem planejamento de produção.
+
+## Documentos de referência para implementação
+
+Esta página define o **loop geral e os riscos de escopo**. A descrição específica de cada componente está em:
+
+- [Roteiro espacial e mecânico do primeiro vertical slice](narrative/opening-level.md) — passo a passo, encontros, interações e recursos.
+- [Campanha e progressão por dez níveis candidatos](narrative/campaign-beats.md) — conteúdo futuro, não parte do protótipo atual.
+- [Trabalhador Convertido](enemies/converted-worker.md) e [Sentinela Industrial](enemies/industrial-sentinel.md) — os dois primeiros arquétipos a implementar.
+- [V-12 Ruptura](objects/rupture-v12.md) — arma principal da demonstração; [arsenal](objects/arsenal.md) como proposta de expansão.
+- [Terminal de Identidade](objects/identity-terminal.md), [catálogo de interações](objects/environment-props.md) e [retrato/HUD](objects/face-interface.md).
+- [Regras físicas e narrativas do mundo](world/rules.md), para manter consistência entre combate, história e cenários.
+- [Guia para assets](art/asset-guidelines.md), para evitar custos altos de sprites antes de validar o renderer.
+
+Esses arquivos são **especificações criativas**, não uma afirmação de que todas as funcionalidades já foram desenvolvidas. Números de dano, frequência de animação, resoluções, limites de arquivo e metas de FPS dependem de testes com os alvos definidos para navegador.
