@@ -51,7 +51,9 @@ A fotografia é um **recurso opcional**: o jogador pode escolher um rosto real o
 - [ENM-003 Parasita Rastejante](enemies/crawler-parasite.md) — flanco rápido.
 - [ENM-004 Acólito do Coro](enemies/choir-acolyte.md) — suporte e ondas de área.
 - [ENM-005 Carregador de Memórias](enemies/memory-hauler.md) — inimigo pesado.
-- [BOS-001 a BOS-004: Superintendente, Torre, Guardião e Espelho](enemies/bosses.md).
+- [Índice dos chefes](enemies/bosses.md): quatro encontros com fichas próprias.
+- [BOS-001 Superintendente 04](enemies/bosses/superintendent-04.md) · [BOS-002 A Torre que Escuta](enemies/bosses/listening-tower.md).
+- [BOS-003 Guardião de Memórias](enemies/bosses/memory-guardian.md) · [BOS-004 O Espelho](enemies/bosses/mirror.md).
 
 ## Objetos, armas e interface
 
@@ -63,6 +65,8 @@ A fotografia é um **recurso opcional**: o jogador pode escolher um rosto real o
 | WPN-001 | Espingarda V-12 Ruptura | [rupture-v12.md](objects/rupture-v12.md) |
 | WPN-002 a WPN-007 | Arsenal proposto e funções de combate | [arsenal.md](objects/arsenal.md) |
 | PROP-001 a PROP-015 | Props de cenário e suas histórias | [environment-props.md](objects/environment-props.md) |
+
+**Fichas individuais do restante do arsenal:** [AR-3](objects/weapons/ar3-fastener.md) · [Serra Torque](objects/weapons/torque-saw.md) · [Bobina Voltaica](objects/weapons/voltaic-coil.md) · [Perfurador de Trilhos](objects/weapons/rail-piercer.md) · [Lança-Cinza](objects/weapons/ash-launcher.md) · [Ressonador](objects/weapons/rupture-resonator.md).
 
 ## Mundo e história
 
