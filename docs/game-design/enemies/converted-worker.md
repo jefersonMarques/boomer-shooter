@@ -28,6 +28,8 @@ O rosto mantém nariz e boca humanos, mas os olhos foram cobertos por um visor s
 
 Som de botas molhadas, respiração comprimida e metal raspando. Uma rara fala residual: “Fim do turno?” — trecho desconectado da consciência anterior. Não confundir essa fala com ameaça principal; o estalo de ombro é o aviso confiável.
 
+**Ficha sonora de produção:** [AUD-ENM-001 — estados, arquivos, sincronização e integração](../audio/enm-001-converted-worker.md). Foram sintetizados quatro eventos originais (idle, attack, scream e death) para testes; a importação dos binários na engine permanece pendente.
+
 ## Frames para orçamento de arte
 
 Direções: frente, 3/4, lado e costas conforme resultado técnico; espelhamento apenas quando a assimetria permitir. Estados mínimos: idle, walk, attack, pain, death. Preparar referências front/side/back antes de animar.
