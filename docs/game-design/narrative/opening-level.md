@@ -52,9 +52,9 @@ O jogador pode ignorar e terminar a fase. Este trecho serve de semente para Tom�
 
 ## Saída — 10:00 a 15:00
 
-O elevador tem grades grossas, luz fraca e vidro sujo. Um painel de parede ainda indica “CENTRO DE RESTAURAÇÃO HUMANA Nº 04”. O jogador ativa o elevador. Atrás das grades, andares se movem; vemos primeiro trilhos de produção e depois uma abertura para Nova Babel — uma massa de prédios cinza sob céu vermelho.
+O elevador tem grades grossas, luz fraca e vidro sujo. Um painel de parede ainda indica “CENTRO DE RESTAURAÇÃO HUMANA Nº 04”. O jogador ativa o elevador. Atrás das grades, andares se movem; vemos primeiro trilhos de produção e, por uma janela blindada distante, uma pequena visão de Nova Babel sob céu vermelho. **A plataforma permanece dentro do Matadouro.**
 
-**Fim da demonstração:** finalizar numa tela de conclusão curta ou com volta ao menu. Na campanha, o percurso estende-se para Ala de Preservação e a Fornalha antes da subida final. Ajustar a saída do slice para não contradizer L02/L03: a visão da cidade no protótipo pode ser uma janela/varanda de serviço, não a fuga definitiva do capítulo.
+**Fim da demonstração:** finalizar numa tela de conclusão curta ou com volta ao menu. Na campanha, o elevador interno leva à **Ala dos Retornados (L02)**. A passagem à superfície ocorre apenas depois da **Fornalha (L03)**, quando o Superintendente 04 é derrotado. A visão da cidade na demo funciona como prenúncio, não fuga.
 
 ## Mapa lógico simplificado
 
@@ -74,3 +74,11 @@ Um único retorno opcional conecta Linha de Separação ao Armário dos Pilotos.
 - Narrativa: três linhas iniciais, uma gravação curta, uma mensagem opcional.
 
 **Referências:** [OBJ-001 Terminal](../objects/identity-terminal.md) · [V-12](../objects/rupture-v12.md) · [Trabalhador](../enemies/converted-worker.md) · [Sentinela](../enemies/industrial-sentinel.md) · [Props](../objects/environment-props.md).
+
+## Documentação de produção detalhada
+
+Este roteiro registra a sequência narrativa inicial. A versão espacial e de produção está separada em três fichas, que passam a ser a referência detalhada do L01:
+
+- [Mapa, percursos, descrição de salas e história ambiental](../levels/l01-discard-chamber.md).
+- [Encontros, ritmo, IA mínima, checkpoints e testes](../levels/l01-encounters.md).
+- [Brief visual e sonoro, materiais e inventário de assets](../levels/l01-art-audio.md).
