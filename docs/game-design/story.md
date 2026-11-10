@@ -67,7 +67,7 @@ O Matadouro conta sua história por detalhes: duas pessoas registradas como a me
 A tensão se desloca de **sobreviver** para **descobrir por que a rede teme uma única pessoa**. Ao enfrentar o **Superintendente 04**, o jogador descobre que o sistema depende de máquinas e pode ser ferido por ação física. O elevador final abre para uma cidade de cinza sob céu vermelho.
 
 **Arte e implementação:**
-[Matadouro](locations/slaughterhouse.md) · [Worker](enemies/converted-worker.md) · [Sentinela](enemies/industrial-sentinel.md) · [V-12](objects/rupture-v12.md) · [Objetos](objects/environment-props.md) · [BOS-001](enemies/bosses.md#bos-001--superintendente-04) · [Roteiro jogável L01](narrative/opening-level.md).
+[Matadouro](locations/slaughterhouse.md) · [Worker](enemies/converted-worker.md) · [Sentinela](enemies/industrial-sentinel.md) · [V-12](objects/rupture-v12.md) · [Objetos](objects/environment-props.md) · [BOS-001](enemies/bosses/superintendent-04.md) · [Roteiro jogável L01](narrative/opening-level.md).
 
 ## Capítulo II — A Cidade Morta: Nova Babel
 
@@ -82,7 +82,7 @@ A Torre Vigília transmite comandos que coordenam a cidade. Ao sabotar seus retr
 Aqui a pergunta muda: **o que resta de uma pessoa depois que a rede guarda tudo, menos sua vontade?**
 
 **Arte e implementação:**
-[Nova Babel](locations/new-babel.md) · [Retransmissores](objects/broadcast-relay.md) · [Parasita](enemies/crawler-parasite.md) · [Irmã Zero](characters/sister-zero.md) · [BOS-002](enemies/bosses.md#bos-002--a-torre-que-escuta).
+[Nova Babel](locations/new-babel.md) · [Retransmissores](objects/broadcast-relay.md) · [Parasita](enemies/crawler-parasite.md) · [Irmã Zero](characters/sister-zero.md) · [BOS-002](enemies/bosses/listening-tower.md).
 
 ## Capítulo III — A Carne de Deus: O Santuário
 
@@ -95,7 +95,7 @@ O confronto na **Capela do Eco** mistura fé e engenharia: Acólitos sincronizam
 No **Arquivo Vesper**, a Testemunha encontra rastros do Protocolo Testemunha. Não foi encontrada por acaso; foi escondida ali. Seu corpo foi fabricado. O capítulo termina antes da resposta completa, mas a direção está clara: o CORO deseja construir um corpo independente e **precisa da liberdade que a Testemunha possui**.
 
 **Arte e implementação:**
-[Santuário](locations/sanctuary.md) · [Irmã Zero](characters/sister-zero.md) · [Acólito](enemies/choir-acolyte.md) · [Carregador de Memórias](enemies/memory-hauler.md) · [BOS-003](enemies/bosses.md#bos-003--guardião-de-memórias).
+[Santuário](locations/sanctuary.md) · [Irmã Zero](characters/sister-zero.md) · [Acólito](enemies/choir-acolyte.md) · [Carregador de Memórias](enemies/memory-hauler.md) · [BOS-003](enemies/bosses/memory-guardian.md).
 
 ## Capítulo IV — O Último Rosto: O Núcleo
 
@@ -121,7 +121,7 @@ Uma transmissão aparece:
 **O mistério da primeira voz de 2123 permanece intencionalmente aberto.** A vitória do protagonista é real; o universo continua maior do que esse combate.
 
 **Arte e implementação:**
-[Núcleo](locations/core.md) · [O CORO](characters/chorus.md) · [A Testemunha](characters/protagonist.md) · [O Espelho](enemies/bosses.md#bos-004--o-espelho) · [Rosto e HUD](objects/face-interface.md).
+[Núcleo](locations/core.md) · [O CORO](characters/chorus.md) · [A Testemunha](characters/protagonist.md) · [O Espelho](enemies/bosses/mirror.md) · [Rosto e HUD](objects/face-interface.md).
 
 ## O diferencial: a identidade não é apenas cosmética
 
@@ -147,7 +147,7 @@ A história nunca deve sequestrar o ritmo. Descobertas obrigatórias aparecem em
 
 **Personagens:** [A Testemunha](characters/protagonist.md), [Lídia](characters/lydia-varela.md), [Tomás](characters/tomas-neri.md), [Irmã Zero](characters/sister-zero.md), [O CORO](characters/chorus.md).
 
-**Objetos:** [Terminal](objects/identity-terminal.md), [V-12 Ruptura](objects/rupture-v12.md), [Retransmissor](objects/broadcast-relay.md), [Rosto e HUD](objects/face-interface.md), [props menores](objects/environment-props.md), [arsenal](objects/arsenal.md).
+**Objetos:** [Terminal](objects/identity-terminal.md), [V-12 Ruptura](objects/rupture-v12.md), [Retransmissor](objects/broadcast-relay.md), [Rosto e HUD](objects/face-interface.md), [props menores](objects/environment-props.md), [arsenal](objects/arsenal.md) e [fichas individuais das armas](objects/arsenal.md).
 
 **Ameaças:** [índice de inimigos](enemies/README.md) e [chefes](enemies/bosses.md).
 
