@@ -10,7 +10,6 @@ BLOCKING_PROP_TYPES = {
     "solidCart",
     "conveyor",
     "movableCabinet",
-    "raisedInspectionPlatform",
 }
 
 PROP_HEIGHTS = {

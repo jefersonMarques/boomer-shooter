@@ -2,7 +2,7 @@
 
 A browser-first retro FPS prototype inspired by the **pace and atmosphere** of classic 1990s shooters. All game logic and rendering are written in **C++20**, with a native Linux build and a WebAssembly/WebGL2 build.
 
-> Prototype 0.1 is a **technical bootstrap**, not yet a complete game. It renders a colored 3D test corridor with WASD movement and mouse look. There are no textures, weapons, enemies, player avatars, touch controls, or multiplayer yet.
+> Prototype 0.1 is a **technical blockout**, not yet a complete game. It renders the L01 industrial complex with rooms, doors, collision and interaction markers. There are no textures, weapons, enemies, player avatars, touch controls, or multiplayer yet.
 
 ## Technology
 
@@ -57,6 +57,8 @@ If CMake has been run before using the native toolchain, always use a separate b
 | Mouse movement | Look around |
 | Left click | Capture mouse |
 | Left Shift | Run |
+| E | Interact with terminal, cabinet, lever or elevator |
+| R | Restart L01 |
 | Escape | Release mouse |
 
 The first prototype does not include touchscreen controls. Smartphone support is planned after the rendering and movement loop have been verified.
