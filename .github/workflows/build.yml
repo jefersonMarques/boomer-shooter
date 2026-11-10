@@ -48,6 +48,27 @@ jobs:
           test -s build/web/boomer_shooter.html
           test -s build/web/boomer_shooter.wasm
           test -s build/web/boomer_shooter.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Verify browser rendering
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 --directory build/web > /tmp/boomer-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          node tests/browser_smoke.mjs
+      - name: Archive browser screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-smoke-screenshot
+          path: browser-smoke.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Archive browser build
         uses: actions/upload-artifact@v4
         with:
