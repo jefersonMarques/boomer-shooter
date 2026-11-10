@@ -1,0 +1,714 @@
+{
+  "schemaVersion": 1,
+  "levelId": "L01",
+  "canonicalName": "Discard Chamber",
+  "status": "proposed",
+  "coordinateSystem": {
+    "unit": "meter",
+    "origin": "southwest",
+    "xAxis": "east",
+    "yAxis": "north",
+    "zAxis": "up",
+    "positions": "room bounds are inclusive geometry; wall width and floor elevations are preliminary"
+  },
+  "bounds": {
+    "minX": 0,
+    "minY": 0,
+    "maxX": 86,
+    "maxY": 37
+  },
+  "rooms": [
+    {
+      "id": "S1",
+      "name": "Discard Chamber",
+      "shape": {
+        "type": "rectangle",
+        "minX": 3,
+        "minY": 26,
+        "maxX": 13,
+        "maxY": 34
+      },
+      "floorZ": 0,
+      "ceilingZ": 2.8
+    },
+    {
+      "id": "S2",
+      "name": "Security Post",
+      "shape": {
+        "type": "rectangle",
+        "minX": 13,
+        "minY": 26,
+        "maxX": 26,
+        "maxY": 34
+      },
+      "floorZ": 0,
+      "ceilingZ": 3.1
+    },
+    {
+      "id": "S3",
+      "name": "Triage Corridor",
+      "shape": {
+        "type": "polygon",
+        "vertices": [
+          [
+            26,
+            28
+          ],
+          [
+            36,
+            28
+          ],
+          [
+            36,
+            19
+          ],
+          [
+            41,
+            19
+          ],
+          [
+            41,
+            33
+          ],
+          [
+            26,
+            33
+          ]
+        ]
+      },
+      "floorZ": 0,
+      "ceilingZ": 3
+    },
+    {
+      "id": "S4",
+      "name": "Maintenance Detour",
+      "shape": {
+        "type": "rectangle",
+        "minX": 34,
+        "minY": 10,
+        "maxX": 47,
+        "maxY": 19
+      },
+      "floorZ": 0,
+      "ceilingZ": 4.6
+    },
+    {
+      "id": "S5",
+      "name": "Sorting Line Arena",
+      "shape": {
+        "type": "rectangle",
+        "minX": 47,
+        "minY": 5,
+        "maxX": 75,
+        "maxY": 26
+      },
+      "floorZ": 0,
+      "ceilingZ": 8
+    },
+    {
+      "id": "S6",
+      "name": "Clandestine Workshop",
+      "secret": true,
+      "shape": {
+        "type": "rectangle",
+        "minX": 50,
+        "minY": 26,
+        "maxX": 59,
+        "maxY": 34
+      },
+      "floorZ": 0,
+      "ceilingZ": 2.7
+    },
+    {
+      "id": "S7",
+      "name": "Internal Service Elevator",
+      "shape": {
+        "type": "rectangle",
+        "minX": 75,
+        "minY": 10,
+        "maxX": 83,
+        "maxY": 19
+      },
+      "floorZ": 0,
+      "ceilingZ": 6,
+      "exitTarget": "L02",
+      "travelDirection": "down"
+    }
+  ],
+  "openings": [
+    {
+      "id": "D01",
+      "connects": [
+        "S1",
+        "S2"
+      ],
+      "segment": [
+        [
+          13,
+          29.1
+        ],
+        [
+          13,
+          31.5
+        ]
+      ],
+      "type": "automatic",
+      "state": "opensAfterTerminal"
+    },
+    {
+      "id": "D02",
+      "connects": [
+        "S2",
+        "S3"
+      ],
+      "segment": [
+        [
+          26,
+          29.3
+        ],
+        [
+          26,
+          31.7
+        ]
+      ],
+      "type": "normal",
+      "state": "open"
+    },
+    {
+      "id": "D03",
+      "connects": [
+        "S3",
+        null
+      ],
+      "segment": [
+        [
+          41,
+          29.5
+        ],
+        [
+          41,
+          31.5
+        ]
+      ],
+      "type": "containment",
+      "state": "permanentlyBlocked",
+      "isRequired": false
+    },
+    {
+      "id": "D04",
+      "connects": [
+        "S3",
+        "S4"
+      ],
+      "segment": [
+        [
+          37.2,
+          19
+        ],
+        [
+          39.8,
+          19
+        ]
+      ],
+      "type": "manual",
+      "state": "open"
+    },
+    {
+      "id": "D05",
+      "connects": [
+        "S4",
+        "S5"
+      ],
+      "segment": [
+        [
+          47,
+          14.3
+        ],
+        [
+          47,
+          17.4
+        ]
+      ],
+      "type": "passage",
+      "state": "open"
+    },
+    {
+      "id": "D06",
+      "connects": [
+        "S5",
+        "S6"
+      ],
+      "segment": [
+        [
+          54,
+          26
+        ],
+        [
+          56,
+          26
+        ]
+      ],
+      "type": "concealedCabinet",
+      "state": "closedUntilDiscovered",
+      "isRequired": false
+    },
+    {
+      "id": "D07",
+      "connects": [
+        "S5",
+        "S7"
+      ],
+      "segment": [
+        [
+          75,
+          12
+        ],
+        [
+          75,
+          16
+        ]
+      ],
+      "type": "hydraulic",
+      "state": "lockedUntilSortingLineStopped"
+    }
+  ],
+  "staticGeometry": [
+    {
+      "id": "securityWindow",
+      "roomId": "S2",
+      "type": "nonTraversableGlass",
+      "segment": [
+        [
+          21,
+          33
+        ],
+        [
+          24,
+          33
+        ]
+      ]
+    },
+    {
+      "id": "firstSentinelPlatform",
+      "roomId": "S4",
+      "type": "raisedInspectionPlatform",
+      "bounds": [
+        42.2,
+        15,
+        46.2,
+        18.5
+      ],
+      "topZ": 1.1
+    },
+    {
+      "id": "maintenanceCoverA",
+      "roomId": "S4",
+      "type": "solidCrate",
+      "bounds": [
+        37,
+        12.2,
+        39.4,
+        14.1
+      ]
+    },
+    {
+      "id": "maintenanceCoverB",
+      "roomId": "S4",
+      "type": "solidCrate",
+      "bounds": [
+        40.3,
+        16.9,
+        42.2,
+        18.3
+      ]
+    },
+    {
+      "id": "arenaEntryRamp",
+      "roomId": "S5",
+      "type": "ramp",
+      "bounds": [
+        47.4,
+        14,
+        51.2,
+        17.6
+      ],
+      "startZ": 1.2,
+      "endZ": 0
+    },
+    {
+      "id": "arenaNorthCatwalk",
+      "roomId": "S5",
+      "type": "raisedWalkway",
+      "bounds": [
+        59,
+        20.5,
+        73,
+        22.4
+      ],
+      "topZ": 1.4
+    },
+    {
+      "id": "arenaSouthCatwalk",
+      "roomId": "S5",
+      "type": "raisedWalkway",
+      "bounds": [
+        59,
+        7.2,
+        73,
+        9.1
+      ],
+      "topZ": 1.4,
+      "role": "environmentalVista"
+    },
+    {
+      "id": "arenaEastCatwalk",
+      "roomId": "S5",
+      "type": "raisedWalkway",
+      "bounds": [
+        71.7,
+        9.1,
+        73,
+        20.5
+      ],
+      "topZ": 1.4,
+      "role": "environmentalVista"
+    },
+    {
+      "id": "conveyorA",
+      "roomId": "S5",
+      "type": "conveyor",
+      "bounds": [
+        53,
+        9,
+        58,
+        10.4
+      ],
+      "solid": true
+    },
+    {
+      "id": "conveyorB",
+      "roomId": "S5",
+      "type": "conveyor",
+      "bounds": [
+        65,
+        9,
+        70,
+        10.4
+      ],
+      "solid": true
+    },
+    {
+      "id": "conveyorC",
+      "roomId": "S5",
+      "type": "conveyor",
+      "bounds": [
+        53,
+        15.7,
+        58,
+        17.1
+      ],
+      "solid": true
+    },
+    {
+      "id": "conveyorD",
+      "roomId": "S5",
+      "type": "conveyor",
+      "bounds": [
+        65,
+        15.7,
+        70,
+        17.1
+      ],
+      "solid": true
+    },
+    {
+      "id": "arenaCoverCart",
+      "roomId": "S5",
+      "type": "solidCart",
+      "bounds": [
+        61,
+        12.5,
+        63,
+        14.2
+      ]
+    },
+    {
+      "id": "secretCabinet",
+      "roomId": "S5",
+      "type": "movableCabinet",
+      "bounds": [
+        53.9,
+        24.5,
+        55.9,
+        25.8
+      ],
+      "interaction": "revealD06"
+    },
+    {
+      "id": "elevatorPlatform",
+      "roomId": "S7",
+      "type": "lift",
+      "bounds": [
+        77,
+        12,
+        81,
+        17
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "id": "playerStart",
+      "type": "playerStart",
+      "roomId": "S1",
+      "position": [
+        7.4,
+        29.5,
+        0
+      ],
+      "yawDegrees": 90
+    },
+    {
+      "id": "identityTerminal",
+      "type": "identityTerminal",
+      "roomId": "S1",
+      "position": [
+        10.3,
+        32.4,
+        0
+      ]
+    },
+    {
+      "id": "v12Pickup",
+      "type": "weaponPickup",
+      "weaponId": "V12Rupture",
+      "roomId": "S2",
+      "position": [
+        17.5,
+        28.7,
+        0
+      ],
+      "required": true
+    },
+    {
+      "id": "securityAmmo",
+      "type": "ammoPickup",
+      "roomId": "S2",
+      "position": [
+        15.6,
+        32.2,
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": "workerA",
+      "type": "convertedWorker",
+      "roomId": "S2",
+      "position": [
+        23.3,
+        29.2,
+        0
+      ],
+      "encounterId": "E01"
+    },
+    {
+      "id": "lydiaRecording",
+      "type": "audioRecording",
+      "roomId": "S3",
+      "position": [
+        37.4,
+        25.3,
+        0
+      ],
+      "trigger": "proximity",
+      "required": false
+    },
+    {
+      "id": "sentinelA",
+      "type": "industrialSentinel",
+      "roomId": "S4",
+      "position": [
+        44,
+        16.2,
+        1.1
+      ],
+      "encounterId": "E02"
+    },
+    {
+      "id": "workerB",
+      "type": "convertedWorker",
+      "roomId": "S5",
+      "position": [
+        55.4,
+        12.5,
+        0
+      ],
+      "encounterId": "E03"
+    },
+    {
+      "id": "sentinelB",
+      "type": "industrialSentinel",
+      "roomId": "S5",
+      "position": [
+        61.6,
+        21.1,
+        1.4
+      ],
+      "encounterId": "E03"
+    },
+    {
+      "id": "sortingLineLever",
+      "type": "switch",
+      "roomId": "S5",
+      "position": [
+        72.3,
+        17.6,
+        0
+      ],
+      "onUse": [
+        "stopConveyors",
+        "unlockD07",
+        "playMachineShutdown"
+      ],
+      "required": true
+    },
+    {
+      "id": "secretRecorder",
+      "type": "audioRecording",
+      "characterId": "TomasNeri",
+      "roomId": "S6",
+      "position": [
+        55,
+        30,
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": "secretAmmo",
+      "type": "ammoPickup",
+      "roomId": "S6",
+      "position": [
+        57.2,
+        28.5,
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": "elevatorControl",
+      "type": "switch",
+      "roomId": "S7",
+      "position": [
+        79,
+        14.8,
+        0
+      ],
+      "onUse": [
+        "completeL01"
+      ],
+      "required": true
+    }
+  ],
+  "encounters": [
+    {
+      "id": "E01",
+      "roomId": "S2",
+      "enemyIds": [
+        "workerA"
+      ],
+      "trigger": "weaponPickup",
+      "maximumSimultaneous": 1
+    },
+    {
+      "id": "E02",
+      "roomId": "S4",
+      "enemyIds": [
+        "sentinelA"
+      ],
+      "trigger": "controlledSightline",
+      "maximumSimultaneous": 1
+    },
+    {
+      "id": "E03",
+      "roomId": "S5",
+      "enemyIds": [
+        "workerB",
+        "sentinelB"
+      ],
+      "trigger": "arenaEntry",
+      "maximumSimultaneous": 2
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "CP00",
+      "roomId": "S1",
+      "position": [
+        7.4,
+        29.5,
+        0
+      ],
+      "enabled": true
+    },
+    {
+      "id": "CP01",
+      "roomId": "S2",
+      "position": [
+        23.9,
+        31.8,
+        0
+      ],
+      "enabled": true,
+      "activation": "afterE01"
+    },
+    {
+      "id": "CP02",
+      "roomId": "S5",
+      "position": [
+        49.3,
+        16,
+        0
+      ],
+      "enabled": false,
+      "activation": "afterPlaytestOnly"
+    }
+  ],
+  "progression": {
+    "mainPath": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S7"
+    ],
+    "optionalBranches": [
+      [
+        "S5",
+        "S6",
+        "S5"
+      ]
+    ],
+    "secretCount": 1,
+    "requiredObjects": [
+      "v12Pickup",
+      "sortingLineLever",
+      "elevatorControl"
+    ],
+    "exitRequires": "SortingLineStopped",
+    "bosses": 0,
+    "exitRemainsInsideSlaughterhouse": true
+  },
+  "implementationNotes": [
+    "Geometry is a proposed blockout; revise dimensions after collision and visibility playtests.",
+    "Solid conveyors do not move the player in the first vertical slice.",
+    "The north catwalk Sentinel must remain shootable from the arena floor.",
+    "The blocked D03 is narrative signage, not a mandatory puzzle.",
+    "No enemy spawns behind the player; E04 remains disabled.",
+    "The hidden D06 must have a detectable visual clue and a return to S5.",
+    "Floor heights and ramp must be adjusted to actual engine movement constraints.",
+    "Missing optional portrait/audio must never block progress."
+  ]
+}
