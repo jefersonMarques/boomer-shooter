@@ -2,7 +2,9 @@
 
 #include <SDL3/SDL.h>
 
+#include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstddef>
 
 namespace {
@@ -27,7 +29,7 @@ void main()
                      cp * horizontal.y + sp * horizontal.z,
                      -sp * horizontal.y + cp * horizontal.z);
     float nearPlane = 0.1;
-    float farPlane = 100.0;
+    float farPlane = 250.0;
     float focal = 1.7320508;
     gl_Position = vec4(focal * view.x / uAspect,
                        focal * view.y,
@@ -69,7 +71,7 @@ GLuint CompileShader(GLenum type, const char* source)
 }
 }
 
-bool Renderer::Initialize()
+bool Renderer::Initialize(const LevelWorld& level)
 {
     const GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, kVertexShader);
     const GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, kFragmentShader);
@@ -102,23 +104,18 @@ bool Renderer::Initialize()
         return false;
     }
 
-    BuildScene();
-    vertexCount_ = static_cast<GLsizei>(vertices_.size() / 6);
-
     glGenVertexArrays(1, &vertexArray_);
     glBindVertexArray(vertexArray_);
     glGenBuffers(1, &vertexBuffer_);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer_);
-    glBufferData(GL_ARRAY_BUFFER,
-                 static_cast<GLsizeiptr>(vertices_.size() * sizeof(float)),
-                 vertices_.data(), GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
+     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                           reinterpret_cast<void*>(3 * sizeof(float)));
     glBindVertexArray(0);
     glEnable(GL_DEPTH_TEST);
+    RefreshLevel(level);
     return true;
 }
 
@@ -162,21 +159,218 @@ void Renderer::Shutdown()
     }
 }
 
-void Renderer::BuildScene()
+void Renderer::RefreshLevel(const LevelWorld& level)
 {
-    AddBox({0.0F, -0.25F, -3.0F}, {8.0F, 0.5F, 22.0F}, {0.26F, 0.23F, 0.22F});
-    AddBox({0.0F, 3.55F, -3.0F}, {8.0F, 0.5F, 22.0F}, {0.16F, 0.13F, 0.19F});
-    AddBox({-4.0F, 1.65F, -3.0F}, {0.5F, 3.3F, 22.0F}, {0.30F, 0.18F, 0.19F});
-    AddBox({4.0F, 1.65F, -3.0F}, {0.5F, 3.3F, 22.0F}, {0.30F, 0.18F, 0.19F});
-    AddBox({0.0F, 1.65F, -14.0F}, {8.0F, 3.3F, 0.5F}, {0.40F, 0.18F, 0.16F});
-    AddBox({0.0F, 1.65F, 8.0F}, {8.0F, 3.3F, 0.5F}, {0.40F, 0.18F, 0.16F});
-    AddBox({-2.8F, 1.2F, -5.0F}, {0.8F, 2.4F, 0.8F}, {0.43F, 0.33F, 0.27F});
-    AddBox({2.8F, 1.2F, -5.0F}, {0.8F, 2.4F, 0.8F}, {0.43F, 0.33F, 0.27F});
-    AddBox({0.0F, 0.5F, -10.0F}, {1.5F, 1.0F, 1.5F}, {0.55F, 0.26F, 0.18F});
-    AddBox({-2.5F, 0.35F, -9.0F}, {1.0F, 0.7F, 1.0F}, {0.33F, 0.30F, 0.25F});
-    AddBox({2.5F, 0.35F, -9.0F}, {1.0F, 0.7F, 1.0F}, {0.33F, 0.30F, 0.25F});
+    if (renderedRevision_ == level.GetRevision()) {
+        return;
+    }
+
+    vertices_.clear();
+    BuildScene(level);
+    vertexCount_ = static_cast<GLsizei>(vertices_.size() / 6);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer_);
+    glBufferData(GL_ARRAY_BUFFER,
+                 static_cast<GLsizeiptr>(vertices_.size() * sizeof(float)),
+                 vertices_.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    renderedRevision_ = level.GetRevision();
 }
 
+namespace {
+bool IsInRoom(const LevelRoom& room, float x, float y)
+{
+    bool inside = false;
+    const auto& points = room.outline;
+    for (std::size_t i = 0, j = points.size() - 1; i < points.size(); j = i++) {
+        const PlanPoint& a = points[i];
+        const PlanPoint& b = points[j];
+        if ((a.y > y) != (b.y > y)) {
+            const float edgeX = a.x + (y - a.y) * (b.x - a.x) / (b.y - a.y);
+            if (x < edgeX) {
+                inside = !inside;
+            }
+        }
+    }
+    return inside;
+}
+
+Vec3 RoomColor(const std::string& id)
+{
+    if (id == "S1" || id == "S2") {
+        return {0.31F, 0.36F, 0.37F};
+    }
+    if (id == "S5") {
+        return {0.27F, 0.31F, 0.28F};
+    }
+    if (id == "S6") {
+        return {0.45F, 0.31F, 0.18F};
+    }
+    return {0.29F, 0.32F, 0.36F};
+}
+
+Vec3 PropColor(const LevelProp& prop)
+{
+    if (prop.type == "nonTraversableGlass") {
+        return {0.18F, 0.38F, 0.42F};
+    }
+    if (prop.type == "conveyor") {
+        return {0.18F, 0.22F, 0.20F};
+    }
+    if (prop.type == "movableCabinet") {
+        return {0.49F, 0.28F, 0.15F};
+    }
+    if (prop.type == "lift") {
+        return {0.56F, 0.43F, 0.20F};
+    }
+    if (prop.type == "raisedWalkway" || prop.type == "raisedInspectionPlatform") {
+        return {0.37F, 0.40F, 0.34F};
+    }
+    return {0.40F, 0.35F, 0.29F};
+}
+
+Vec3 MarkerColor(const std::string& type)
+{
+    if (type == "convertedWorker" || type == "industrialSentinel") {
+        return {0.73F, 0.16F, 0.15F};
+    }
+    if (type == "switch" || type == "identityTerminal") {
+        return {0.93F, 0.70F, 0.19F};
+    }
+    if (type == "weaponPickup") {
+        return {0.28F, 0.85F, 0.52F};
+    }
+    if (type == "ammoPickup") {
+        return {0.22F, 0.69F, 0.78F};
+    }
+    return {0.54F, 0.39F, 0.65F};
+}
+}
+
+void Renderer::BuildScene(const LevelWorld& level)
+{
+    const LevelDefinition& data = level.GetDefinition();
+
+    for (const LevelRoom& room : data.rooms) {
+        std::vector<float> xCuts;
+        std::vector<float> yCuts;
+
+        for (const PlanPoint& point : room.outline) {
+            xCuts.push_back(point.x);
+            yCuts.push_back(point.y);
+        }
+
+        std::sort(xCuts.begin(), xCuts.end());
+        std::sort(yCuts.begin(), yCuts.end());
+        xCuts.erase(std::unique(xCuts.begin(), xCuts.end()), xCuts.end());
+        yCuts.erase(std::unique(yCuts.begin(), yCuts.end()), yCuts.end());
+
+        for (std::size_t xIndex = 1; xIndex < xCuts.size(); ++xIndex) {
+            for (std::size_t yIndex = 1; yIndex < yCuts.size(); ++yIndex) {
+                const float minX = xCuts[xIndex - 1];
+                const float maxX = xCuts[xIndex];
+                const float minY = yCuts[yIndex - 1];
+                const float maxY = yCuts[yIndex];
+                const float centerX = (minX + maxX) * 0.5F;
+                const float centerY = (minY + maxY) * 0.5F;
+                if (!IsInRoom(room, centerX, centerY)) {
+                    continue;
+                }
+
+                const Vec3 center{centerX, 0.0F, -centerY};
+                const Vec3 dimensions{maxX - minX, 0.18F, maxY - minY};
+                const Vec3 floorColor = RoomColor(room.id);
+
+                AddBox({center.x, room.floorZ - 0.09F, center.z},
+                       dimensions, floorColor);
+                AddBox({center.x, room.ceilingZ + 0.09F, center.z},
+                       dimensions, {0.15F, 0.17F, 0.20F});
+            }
+        }
+    }
+
+    for (const LevelWall& wall : level.GetWalls()) {
+        const float midX = (wall.start.x + wall.end.x) * 0.5F;
+        const float midY = (wall.start.y + wall.end.y) * 0.5F;
+        const float width = std::max(0.20F, std::abs(wall.end.x - wall.start.x));
+        const float depth = std::max(0.20F, std::abs(wall.end.y - wall.start.y));
+
+        AddBox({midX, (wall.floorZ + wall.ceilingZ) * 0.5F, -midY},
+               {width, wall.ceilingZ - wall.floorZ, depth},
+               {0.34F, 0.38F, 0.38F});
+    }
+
+    for (const LevelDoor& door : data.doors) {
+        if (door.isOpen) {
+            continue;
+        }
+
+        const float width = std::max(0.25F, std::abs(door.end.x - door.start.x));
+        const float depth = std::max(0.25F, std::abs(door.end.y - door.start.y));
+        const Vec3 color = door.id == "D03"
+            ? Vec3{0.65F, 0.13F, 0.16F}
+            : door.id == "D06"
+                ? Vec3{0.34F, 0.38F, 0.38F}
+                : Vec3{0.62F, 0.47F, 0.20F};
+
+        AddBox({(door.start.x + door.end.x) * 0.5F, 1.3F,
+                -(door.start.y + door.end.y) * 0.5F},
+               {width, 2.6F, depth}, color);
+    }
+
+    for (const LevelProp& prop : data.props) {
+        if (prop.id == "secretCabinet" && level.IsDoorOpen("D06")) {
+            continue;
+        }
+
+        if (prop.type == "ramp") {
+            AddRamp(prop);
+            continue;
+        }
+
+        const float middleX = (prop.bounds.minX + prop.bounds.maxX) * 0.5F;
+        const float middleY = (prop.bounds.minY + prop.bounds.maxY) * 0.5F;
+        AddBox({middleX, (prop.bottomZ + prop.topZ) * 0.5F, -middleY},
+               {prop.bounds.maxX - prop.bounds.minX,
+                prop.topZ - prop.bottomZ,
+                prop.bounds.maxY - prop.bounds.minY},
+               PropColor(prop));
+    }
+
+    for (const LevelEntity& entity : data.entities) {
+        if (entity.type == "playerStart" || entity.type == "audioRecording") {
+            continue;
+        }
+
+        const float height = entity.type == "industrialSentinel" ? 1.35F : 0.8F;
+        AddBox({entity.position.x, entity.floorZ + height * 0.5F,
+                -entity.position.y},
+               {0.65F, height, 0.65F}, MarkerColor(entity.type));
+    }
+}
+
+void Renderer::AddTriangle(const Vec3& a, const Vec3& b, const Vec3& c,
+                           const Vec3& color)
+{
+    for (const Vec3& position : {a, b, c}) {
+        vertices_.insert(vertices_.end(),
+                         {position.x, position.y, position.z,
+                          color.x, color.y, color.z});
+    }
+}
+
+void Renderer::AddRamp(const LevelProp& prop)
+{
+    const PlanRect& area = prop.bounds;
+    const Vec3 northWest{area.minX, prop.rampStartZ, -area.maxY};
+    const Vec3 northEast{area.maxX, prop.rampEndZ, -area.maxY};
+    const Vec3 southEast{area.maxX, prop.rampEndZ, -area.minY};
+    const Vec3 southWest{area.minX, prop.rampStartZ, -area.minY};
+    const Vec3 color{0.38F, 0.37F, 0.29F};
+
+    AddTriangle(northWest, northEast, southEast, color);
+    AddTriangle(northWest, southEast, southWest, color);
+}
 void Renderer::AddBox(const Vec3& center, const Vec3& dimensions, const Vec3& color)
 {
     const float halfX = dimensions.x * 0.5F;

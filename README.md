@@ -81,3 +81,40 @@ The first prototype does not include touchscreen controls. Smartphone support is
 ## Game design and story
 
 The game's initial creative direction is documented under [docs/game-design](docs/game-design/README.md), including the **O Último Rosto** story, worldbuilding, visual direction, gameplay pillars, optional face personalization, and the initial vertical-slice scope. These are design references, not completed prototype features.
+
+## L01 blockout
+
+The game now loads its first level, **L01 - Discard Chamber**, from
+`docs/game-design/levels/l01-layout.json`. The file is converted at build time
+into typed C++ structures by `tools/generate_level.py`, keeping the game
+runtime independent of a JSON parser.
+
+The level includes seven sectors, seven doorways, blocking walls, solid cover,
+conveyors, placeholders for encounters and the single optional secret room.
+
+### Interactions
+
+- `E` near the identity terminal in S1: open D01.
+- `E` near the cabinet in S5: reveal the optional S6 room (D06).
+- `E` near the sorting line lever in S5: open D07.
+- `E` near the elevator control in S7: finish L01.
+- `R`: reset doors and return to the starting position.
+
+Interaction messages currently appear in the game window title.
+Enemies and items are colored placeholder blocks, not implemented gameplay.
+The raised platforms and ramp are render-only blockout geometry: player
+movement still uses a flat floor until elevation-aware collisions are built.
+
+The original plan uses (X east, Y north, Z up). The renderer uses
+(X east, Y up, Z south), so map Y is converted to negative world Z.
+
+### Run checks locally
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py'
+cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/native
+ctest --test-dir build/native --output-on-failure
+```
+
+The GitHub Actions workflow also builds WASM and checks rendering in Chromium.

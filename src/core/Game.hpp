@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 
 #include "gameplay/PlayerController.hpp"
+#include "level/LevelWorld.hpp"
 #include "renderer/Renderer.hpp"
 
 class Game final {
@@ -16,10 +17,12 @@ public:
 private:
     void Frame();
     void ProcessEvents();
+    void ResetLevel();
     void Shutdown();
 
     SDL_Window* window_ = nullptr;
     SDL_GLContext context_ = nullptr;
+    LevelWorld level_;
     Renderer renderer_;
     PlayerController player_;
     bool running_ = true;

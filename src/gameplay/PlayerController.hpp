@@ -2,6 +2,8 @@
 
 #include <SDL3/SDL.h>
 
+#include "level/LevelWorld.hpp"
+
 struct Vec3 {
     float x = 0.0F;
     float y = 0.0F;
@@ -10,7 +12,8 @@ struct Vec3 {
 
 class PlayerController final {
 public:
-    void Update(float deltaSeconds);
+    void Spawn(const PlanPoint& point, float floorZ, float yawDegrees);
+    void Update(float deltaSeconds, const LevelWorld& level);
     void Look(float deltaX, float deltaY);
 
     [[nodiscard]] const Vec3& GetPosition() const;
@@ -18,7 +21,7 @@ public:
     [[nodiscard]] float GetPitch() const;
 
 private:
-    Vec3 position_{0.0F, 1.6F, 5.0F};
+    Vec3 position_;
     float yaw_ = 0.0F;
     float pitch_ = 0.0F;
 };
