@@ -78,6 +78,7 @@ A fotografia é um **recurso opcional**: o jogador pode escolher um rosto real o
 ## Primeira fase — Câmara de Descarte
 
 - [LVL-001 Planta, descrição das sete áreas, fluxo e acontecimentos](levels/l01-discard-chamber.md).
+- [LVL-001-MAP Planta baixa física, dimensões e um segredo](levels/l01-floor-plan.md) · [SVG](levels/l01-floor-plan.svg) · [JSON](levels/l01-layout.json).
 - [LVL-001-ENC Comportamento dos inimigos, encontros, ritmo e critérios de teste](levels/l01-encounters.md).
 - [LVL-001-ART Conceitos, iluminação, materiais, inventário visual e plano de som](levels/l01-art-audio.md).
 
