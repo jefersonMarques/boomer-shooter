@@ -75,6 +75,14 @@ A fotografia é um **recurso opcional**: o jogador pode escolher um rosto real o
 - [WLD-003 Facções](world/factions.md) — Consórcio, CORO, resistência e Desvios.
 - [Glossário com fontes canônicas](world/glossary.md) — termos importantes e links.
 
+## Primeira fase — Câmara de Descarte
+
+- [LVL-001 Planta, descrição das sete áreas, fluxo e acontecimentos](levels/l01-discard-chamber.md).
+- [LVL-001-ENC Comportamento dos inimigos, encontros, ritmo e critérios de teste](levels/l01-encounters.md).
+- [LVL-001-ART Conceitos, iluminação, materiais, inventário visual e plano de som](levels/l01-art-audio.md).
+
+A primeira fase termina em um **elevador interno para L02 (Ala dos Retornados)**. A saída definitiva do Matadouro permanece em L03, após o Superintendente 04. O escopo da demonstração é proposto e deve ser validado por testes do protótipo.
+
 ## Sequência narrativa e produção
 
 - [NAR-001 Campanha em dez fases](narrative/campaign-beats.md) — pistas, confrontos e revelações.
