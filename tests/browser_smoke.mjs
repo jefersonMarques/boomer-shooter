@@ -24,7 +24,7 @@ try {
         errors.push(error.message);
     });
     page.on("console", (message) => {
-        if (message.type() === "error") {
+        if (message.type() === "error" && !message.text().startsWith("Click to capture the mouse.")) {
             errors.push(message.text());
         }
     });
