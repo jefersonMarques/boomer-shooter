@@ -204,6 +204,7 @@ Por uma janela de inspeção superior é possível ver **uma pequena fatia do c�
 
 ## Fichas proprietárias
 
+- [Planta baixa em escala de blockout, coordenadas e segredo único](l01-floor-plan.md) — [visual SVG](l01-floor-plan.svg) e [geometria JSON](l01-layout.json).
 - [Ritmo, encontros, gatilhos e testes do L01](l01-encounters.md).
 - [Arte, iluminação, efeitos, som e inventário do L01](l01-art-audio.md).
 - [A Testemunha](../characters/protagonist.md), [Lídia](../characters/lydia-varela.md) e [Tomás](../characters/tomas-neri.md).
