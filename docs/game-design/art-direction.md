@@ -93,3 +93,15 @@ Música, efeitos e fontes de áudio devem ser originais ou devidamente licenciad
 ## Critérios de aceitação artística
 
 A estética é bem-sucedida quando: (1) o jogador reconhece rapidamente inimigos, armas e objetivos; (2) a imagem mantém personalidade em resolução reduzida; (3) cada capítulo é identificável sem texto; (4) a personalização facial não rompe a coesão; (5) o projeto roda com fluidez na plataforma-alvo.
+
+## Fichas de referência para artistas
+
+A especificação visual detalhada agora fica nas **fichas individuais**, e este documento conserva a identidade geral, a paleta e os princípios de legibilidade. Usar [ART-001 Guia de produção de assets](art/asset-guidelines.md) como checklist para concepts, sprites e texturas.
+
+- **Personagens:** [A Testemunha](characters/protagonist.md), [Lídia Varela](characters/lydia-varela.md), [Tomás Neri](characters/tomas-neri.md), [Irmã Zero](characters/sister-zero.md) e [O CORO](characters/chorus.md).
+- **Ambientes:** [Matadouro](locations/slaughterhouse.md), [Nova Babel](locations/new-babel.md), [Santuário](locations/sanctuary.md) e [Núcleo](locations/core.md).
+- **Inimigos:** [Bestiário](enemies/README.md) e [chefes](enemies/bosses.md); cada criatura comum possui ficha de silhueta, animações, som e comportamento.
+- **Objetos e interface:** [Catálogo de props](objects/environment-props.md), [Terminal de Identidade](objects/identity-terminal.md), [Retransmissor](objects/broadcast-relay.md), [V-12 Ruptura](objects/rupture-v12.md) e [Rosto/HUD](objects/face-interface.md).
+- **Ordem de produção:** [roteiro L01 e checklist visual](narrative/opening-level.md).
+
+**Fonte única dos detalhes:** alterações de anatomia, composição de objetos ou acontecimentos devem ser feitas primeiro na ficha da entidade e depois refletidas aqui, quando afetarem a identidade visual do universo.
