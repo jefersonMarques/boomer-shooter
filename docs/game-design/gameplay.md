@@ -116,7 +116,8 @@ A documentação estabelece o objetivo criativo, mas não substitui especificaç
 
 Esta página define o **loop geral e os riscos de escopo**. A descrição específica de cada componente está em:
 
-- [Roteiro espacial e mecânico do primeiro vertical slice](narrative/opening-level.md) — passo a passo, encontros, interações e recursos.
+- [Roteiro narrativo da abertura](narrative/opening-level.md) — cenas e falas de L01.
+- [Fase L01 — mapa e salas](levels/l01-discard-chamber.md), [encontros e checkpoints](levels/l01-encounters.md) e [assets/áudio](levels/l01-art-audio.md) — referências detalhadas de produção.
 - [Campanha e progressão por dez níveis candidatos](narrative/campaign-beats.md) — conteúdo futuro, não parte do protótipo atual.
 - [Trabalhador Convertido](enemies/converted-worker.md) e [Sentinela Industrial](enemies/industrial-sentinel.md) — os dois primeiros arquétipos a implementar.
 - [V-12 Ruptura](objects/rupture-v12.md) — arma principal da demonstração; [arsenal](objects/arsenal.md) como proposta de expansão.
