@@ -17,6 +17,7 @@
 4. [Campanha e dez fases candidatas](narrative/campaign-beats.md): ordem das descobertas, conflitos e chefes.
 5. [Direção de arte](art-direction.md) + [guia para produção de assets](art/asset-guidelines.md).
 6. [Gameplay e MVP](gameplay.md) + [roteiro jogável da primeira fase](narrative/opening-level.md).
+7. [Direção sonora e fichas de efeitos](audio/README.md): registros de áudio, eventos e arquivos de produção.
 
 ## Premissa
 
