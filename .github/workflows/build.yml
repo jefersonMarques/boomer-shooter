@@ -1,0 +1,81 @@
+name: Build Native and WebAssembly
+
+on:
+  push:
+    branches:
+      - main
+      - ci/validate-native-wasm
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: Linux C++20
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build cmake \
+            libgles2-mesa-dev libegl1-mesa-dev \
+            libx11-dev libxcursor-dev libxi-dev libxrandr-dev \
+            libxext-dev libxfixes-dev libxkbcommon-dev \
+            libxss-dev libxtst-dev libxinerama-dev libxkbcommon-x11-dev libx11-xcb-dev
+      - name: Configure
+        run: cmake -S . -B build/native -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build/native --parallel 2
+
+  wasm:
+    name: WebAssembly WebGL2
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: '4.0.15'
+      - name: Configure
+        run: emcmake cmake -S . -B build/web -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build/web --parallel 2
+      - name: Verify artifacts
+        run: |
+          test -s build/web/boomer_shooter.html
+          test -s build/web/boomer_shooter.wasm
+          test -s build/web/boomer_shooter.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Verify browser rendering
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 --directory build/web > /tmp/boomer-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          node tests/browser_smoke.mjs
+      - name: Archive browser screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-smoke-screenshot
+          path: browser-smoke.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Archive browser build
+        uses: actions/upload-artifact@v4
+        with:
+          name: boomer-shooter-wasm
+          path: |
+            build/web/boomer_shooter.html
+            build/web/boomer_shooter.js
+            build/web/boomer_shooter.wasm
+          retention-days: 7

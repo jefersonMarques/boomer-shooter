@@ -20,7 +20,8 @@ Install prerequisites:
 sudo apt update
 sudo apt install -y build-essential cmake ninja-build git python3 \
     libgles2-mesa-dev libegl1-mesa-dev libx11-dev libxcursor-dev \
-    libxi-dev libxrandr-dev libxext-dev libxfixes-dev libxkbcommon-dev
+    libxi-dev libxrandr-dev libxext-dev libxfixes-dev libxkbcommon-dev \
+    libxss-dev libxtst-dev libxinerama-dev libxkbcommon-x11-dev libx11-xcb-dev
 ```
 
 Configure and build:
