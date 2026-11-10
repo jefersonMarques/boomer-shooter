@@ -77,3 +77,7 @@ The first prototype does not include touchscreen controls. Smartphone support is
 - Use original or properly licensed artwork, audio, and levels.
 - Keep platform-specific code isolated from game logic.
 - Avoid a fully general-purpose engine until the playable prototype proves it necessary.
+
+## Game design and story
+
+The game's initial creative direction is documented under [docs/game-design](docs/game-design/README.md), including the **O Último Rosto** story, worldbuilding, visual direction, gameplay pillars, optional face personalization, and the initial vertical-slice scope. These are design references, not completed prototype features.
