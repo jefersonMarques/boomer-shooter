@@ -27,6 +27,7 @@ private:
     PlayerController player_;
     bool running_ = true;
     bool mouseCaptured_ = false;
+    bool mapView_ = false;
     double accumulator_ = 0.0;
     Uint64 previousCounter_ = 0;
 };

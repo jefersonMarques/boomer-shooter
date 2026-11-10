@@ -15,9 +15,20 @@ layout(location = 1) in vec3 aColor;
 uniform vec3 uCameraPosition;
 uniform vec2 uCameraAngles;
 uniform float uAspect;
+uniform bool uMapView;
+uniform vec2 uMapCenter;
+uniform vec2 uMapHalfExtent;
 out vec3 vColor;
 void main()
 {
+    if (uMapView) {
+        vec2 mapPosition = vec2(aPosition.x, -aPosition.z);
+        vec2 clipPosition = (mapPosition - uMapCenter) / uMapHalfExtent;
+        gl_Position = vec4(clipPosition, -aPosition.y / 32.0, 1.0);
+        vColor = aColor;
+        return;
+    }
+
     vec3 point = aPosition - uCameraPosition;
     float cy = cos(uCameraAngles.x);
     float sy = sin(uCameraAngles.x);
@@ -115,11 +126,12 @@ bool Renderer::Initialize(const LevelWorld& level)
                           reinterpret_cast<void*>(3 * sizeof(float)));
     glBindVertexArray(0);
     glEnable(GL_DEPTH_TEST);
-    RefreshLevel(level);
+    RefreshLevel(level, false);
     return true;
 }
 
-void Renderer::Draw(const PlayerController& player, int width, int height) const
+void Renderer::Draw(const PlayerController& player, int width, int height,
+                    bool mapView) const
 {
     if (width <= 0 || height <= 0) {
         return;
@@ -135,12 +147,50 @@ void Renderer::Draw(const PlayerController& player, int width, int height) const
                 camera.x, camera.y, camera.z);
     glUniform2f(glGetUniformLocation(program_, "uCameraAngles"),
                 player.GetYaw(), player.GetPitch());
-    glUniform1f(glGetUniformLocation(program_, "uAspect"),
-                static_cast<float>(width) / static_cast<float>(height));
+    const float aspect = static_cast<float>(width) / static_cast<float>(height);
+    glUniform1f(glGetUniformLocation(program_, "uAspect"), aspect);
+    glUniform1i(glGetUniformLocation(program_, "uMapView"), mapView ? 1 : 0);
+
+    float mapHalfWidth = 1.0F;
+    float mapHalfHeight = 1.0F;
+    float mapCenterX = 0.0F;
+    float mapCenterY = 0.0F;
+
+    if (mapView) {
+        mapCenterX = (mapBounds_.minX + mapBounds_.maxX) * 0.5F;
+        mapCenterY = (mapBounds_.minY + mapBounds_.maxY) * 0.5F;
+        mapHalfWidth = std::max(
+            (mapBounds_.maxX - mapBounds_.minX) * 0.5F + 3.0F,
+            ((mapBounds_.maxY - mapBounds_.minY) * 0.5F + 3.0F) * aspect
+        );
+        mapHalfHeight = mapHalfWidth / aspect;
+        glUniform2f(glGetUniformLocation(program_, "uMapCenter"),
+                    mapCenterX, mapCenterY);
+        glUniform2f(glGetUniformLocation(program_, "uMapHalfExtent"),
+                    mapHalfWidth, mapHalfHeight);
+    }
 
     glBindVertexArray(vertexArray_);
     glDrawArrays(GL_TRIANGLES, 0, vertexCount_);
     glBindVertexArray(0);
+
+    if (mapView) {
+        const int markerX = static_cast<int>(
+            (1.0F + (camera.x - mapCenterX) / mapHalfWidth) * width * 0.5F
+        );
+        const int markerY = static_cast<int>(
+            (1.0F + (-camera.z - mapCenterY) / mapHalfHeight) * height * 0.5F
+        );
+
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(markerX - 7, markerY - 7, 15, 15);
+        glClearColor(0.02F, 0.02F, 0.02F, 1.0F);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glScissor(markerX - 4, markerY - 4, 9, 9);
+        glClearColor(1.0F, 0.89F, 0.20F, 1.0F);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDisable(GL_SCISSOR_TEST);
+    }
 }
 
 void Renderer::Shutdown()
@@ -159,14 +209,19 @@ void Renderer::Shutdown()
     }
 }
 
-void Renderer::RefreshLevel(const LevelWorld& level)
+void Renderer::RefreshLevel(const LevelWorld& level, bool mapView)
 {
-    if (renderedRevision_ == level.GetRevision()) {
+    if (renderedRevision_ == level.GetRevision() &&
+        renderedMapView_ == mapView) {
         return;
     }
 
     vertices_.clear();
-    BuildScene(level);
+    if (mapView) {
+        BuildOverview(level);
+    } else {
+        BuildScene(level);
+    }
     vertexCount_ = static_cast<GLsizei>(vertices_.size() / 6);
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer_);
@@ -175,6 +230,7 @@ void Renderer::RefreshLevel(const LevelWorld& level)
                  vertices_.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     renderedRevision_ = level.GetRevision();
+    renderedMapView_ = mapView;
 }
 
 namespace {
@@ -245,6 +301,177 @@ Vec3 MarkerColor(const std::string& type)
     }
     return {0.54F, 0.39F, 0.65F};
 }
+}
+
+void Renderer::AddOverviewRect(float minX, float minY, float maxX,
+                               float maxY, float height, const Vec3& color)
+{
+    if (maxX <= minX || maxY <= minY) {
+        return;
+    }
+
+    const Vec3 southwest{minX, height, -minY};
+    const Vec3 southeast{maxX, height, -minY};
+    const Vec3 northeast{maxX, height, -maxY};
+    const Vec3 northwest{minX, height, -maxY};
+
+    AddTriangle(southwest, southeast, northeast, color);
+    AddTriangle(southwest, northeast, northwest, color);
+}
+
+void Renderer::AddOverviewLabel(const std::string& roomId,
+                                float centerX, float centerY)
+{
+    if (roomId.size() != 2 || roomId[0] != 'S' ||
+        roomId[1] < '1' || roomId[1] > '7') {
+        return;
+    }
+
+    constexpr std::array<int, 5> letterS{{7, 4, 7, 1, 7}};
+    constexpr std::array<std::array<int, 5>, 8> digits{{
+        {{7, 5, 5, 5, 7}}, {{2, 6, 2, 2, 7}},
+        {{7, 1, 7, 4, 7}}, {{7, 1, 7, 1, 7}},
+        {{5, 5, 7, 1, 1}}, {{7, 4, 7, 1, 7}},
+        {{7, 4, 7, 5, 7}}, {{7, 1, 1, 2, 2}}
+    }};
+
+    constexpr float kCellSize = 0.50F;
+    const float startX = centerX - 3.5F * kCellSize;
+    const float startY = centerY + 2.5F * kCellSize;
+    const Vec3 labelColor{0.94F, 0.94F, 0.86F};
+
+    const auto drawGlyph = [&](const std::array<int, 5>& rows,
+                               float offsetX) {
+        for (std::size_t row = 0; row < rows.size(); ++row) {
+            for (int column = 0; column < 3; ++column) {
+                if ((rows[row] & (1 << (2 - column))) == 0) {
+                    continue;
+                }
+
+                const float x = startX + (offsetX + column) * kCellSize;
+                const float y = startY - static_cast<float>(row) * kCellSize;
+
+                AddOverviewRect(x, y, x + 0.80F * kCellSize,
+                                y + 0.80F * kCellSize, 3.0F, labelColor);
+            }
+        }
+    };
+
+    drawGlyph(letterS, 0.0F);
+    drawGlyph(digits[static_cast<std::size_t>(roomId[1] - '0')], 4.0F);
+}
+
+void Renderer::BuildOverview(const LevelWorld& level)
+{
+    const LevelDefinition& data = level.GetDefinition();
+    if (data.rooms.empty()) {
+        return;
+    }
+
+    const PlanPoint firstPoint = data.rooms.front().outline.front();
+    mapBounds_ = {firstPoint.x, firstPoint.y, firstPoint.x, firstPoint.y};
+
+    for (const LevelRoom& room : data.rooms) {
+        std::vector<float> xCuts;
+        std::vector<float> yCuts;
+
+        for (const PlanPoint& point : room.outline) {
+            mapBounds_.minX = std::min(mapBounds_.minX, point.x);
+            mapBounds_.maxX = std::max(mapBounds_.maxX, point.x);
+            mapBounds_.minY = std::min(mapBounds_.minY, point.y);
+            mapBounds_.maxY = std::max(mapBounds_.maxY, point.y);
+
+            xCuts.push_back(point.x);
+            yCuts.push_back(point.y);
+        }
+
+        std::sort(xCuts.begin(), xCuts.end());
+        std::sort(yCuts.begin(), yCuts.end());
+        xCuts.erase(std::unique(xCuts.begin(), xCuts.end()), xCuts.end());
+        yCuts.erase(std::unique(yCuts.begin(), yCuts.end()), yCuts.end());
+
+        float labelArea = 0.0F;
+        PlanPoint labelPosition{};
+
+        for (std::size_t xIndex = 1; xIndex < xCuts.size(); ++xIndex) {
+            for (std::size_t yIndex = 1; yIndex < yCuts.size(); ++yIndex) {
+                const float minX = xCuts[xIndex - 1];
+                const float maxX = xCuts[xIndex];
+                const float minY = yCuts[yIndex - 1];
+                const float maxY = yCuts[yIndex];
+                const float centerX = (minX + maxX) * 0.5F;
+                const float centerY = (minY + maxY) * 0.5F;
+
+                if (!IsInRoom(room, centerX, centerY)) {
+                    continue;
+                }
+
+                AddOverviewRect(minX, minY, maxX, maxY, 0.0F,
+                                RoomColor(room.id));
+
+                const float area = (maxX - minX) * (maxY - minY);
+                if (area > labelArea) {
+                    labelArea = area;
+                    labelPosition = {centerX, centerY};
+                }
+            }
+        }
+
+        if (labelArea > 0.0F) {
+            AddOverviewLabel(room.id, labelPosition.x, labelPosition.y);
+        }
+    }
+
+    for (const LevelWall& wall : level.GetWalls()) {
+        const float minX = std::min(wall.start.x, wall.end.x) - 0.13F;
+        const float minY = std::min(wall.start.y, wall.end.y) - 0.13F;
+        const float maxX = std::max(wall.start.x, wall.end.x) + 0.13F;
+        const float maxY = std::max(wall.start.y, wall.end.y) + 0.13F;
+
+        AddOverviewRect(minX, minY, maxX, maxY, 1.0F,
+                        {0.72F, 0.74F, 0.72F});
+    }
+
+    for (const LevelDoor& door : data.doors) {
+        const float minX = std::min(door.start.x, door.end.x) - 0.20F;
+        const float minY = std::min(door.start.y, door.end.y) - 0.20F;
+        const float maxX = std::max(door.start.x, door.end.x) + 0.20F;
+        const float maxY = std::max(door.start.y, door.end.y) + 0.20F;
+
+        const Vec3 color = door.isOpen
+            ? Vec3{0.20F, 0.76F, 0.46F}
+            : door.id == "D03"
+                ? Vec3{0.90F, 0.18F, 0.19F}
+                : Vec3{0.95F, 0.57F, 0.19F};
+
+        AddOverviewRect(minX, minY, maxX, maxY, 1.7F, color);
+    }
+
+    for (const LevelProp& prop : data.props) {
+        if (prop.id == "secretCabinet" && level.IsDoorOpen("D06")) {
+            continue;
+        }
+
+        AddOverviewRect(prop.bounds.minX, prop.bounds.minY,
+                        prop.bounds.maxX, prop.bounds.maxY, 1.5F,
+                        PropColor(prop));
+    }
+
+    for (const LevelEntity& entity : data.entities) {
+        if (entity.type == "playerStart") {
+            continue;
+        }
+
+        const float size = entity.type == "convertedWorker" ||
+                           entity.type == "industrialSentinel"
+            ? 0.45F : 0.30F;
+
+        AddOverviewRect(entity.position.x - size,
+                        entity.position.y - size,
+                        entity.position.x + size,
+                        entity.position.y + size,
+                        2.0F, MarkerColor(entity.type));
+    }
 }
 
 void Renderer::BuildScene(const LevelWorld& level)

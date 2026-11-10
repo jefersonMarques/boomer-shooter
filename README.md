@@ -57,6 +57,7 @@ If CMake has been run before using the native toolchain, always use a separate b
 | Mouse movement | Look around |
 | Left click | Capture mouse |
 | Left Shift | Run |
+| M | Toggle top-down L01 overview (debug) |
 | E | Interact with terminal, cabinet, lever or elevator |
 | R | Restart L01 |
 | Escape | Release mouse |
@@ -90,6 +91,8 @@ The game now loads its first level, **L01 - Discard Chamber**, from
 `docs/game-design/levels/l01-layout.json`. The file is converted at build time
 into typed C++ structures by `tools/generate_level.py`, keeping the game
 runtime independent of a JSON parser.
+
+Press `M` to inspect the top-down L01 layout, sector labels, doors and the yellow player marker. Press `M` again to return to first-person gameplay. This is a developer overview, not a finished in-game automap.
 
 The level includes seven sectors, seven doorways, blocking walls, solid cover,
 conveyors, placeholders for encounters and the single optional secret room.

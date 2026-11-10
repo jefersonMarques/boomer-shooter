@@ -57,7 +57,7 @@ bool Game::Initialize()
     }
 
     previousCounter_ = SDL_GetPerformanceCounter();
-    SDL_Log("Click to capture mouse. WASD move, Shift run, E interact, R restart, Esc release.");
+    SDL_Log("Click to capture mouse. WASD move, Shift run, E interact, M overview, R restart, Esc release.");
     return true;
 }
 
@@ -97,12 +97,12 @@ void Game::Frame()
         accumulator_ -= kFixedDelta;
     }
 
-    renderer_.RefreshLevel(level_);
+    renderer_.RefreshLevel(level_, mapView_);
 
     int width = 0;
     int height = 0;
     SDL_GetWindowSizeInPixels(window_, &width, &height);
-    renderer_.Draw(player_, width, height);
+    renderer_.Draw(player_, width, height, mapView_);
     SDL_GL_SwapWindow(window_);
 }
 
@@ -127,6 +127,12 @@ void Game::ProcessEvents()
             }
             if (!event.key.repeat && event.key.scancode == SDL_SCANCODE_R) {
                 ResetLevel();
+            }
+            if (!event.key.repeat && event.key.scancode == SDL_SCANCODE_M) {
+                mapView_ = !mapView_;
+                SDL_SetWindowTitle(window_, mapView_
+                    ? "Boomer Shooter - L01 OVERVIEW (M: Return to FPS)"
+                    : "Boomer Shooter - L01 Blockout");
             }
             break;
         case SDL_EVENT_MOUSE_BUTTON_DOWN:

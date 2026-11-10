@@ -54,7 +54,30 @@ try {
     assert.ok(colors.size >= 4, "Game canvas appears blank or uniform");
     assert.deepEqual(errors, [], "Browser reported runtime errors");
 
+    await page.keyboard.press("m");
+    await page.waitForTimeout(500);
+    const overviewScreenshot = await canvas.screenshot();
+    await writeFile("browser-overview.png", overviewScreenshot);
+
+    const overview = PNG.sync.read(overviewScreenshot);
+    let changedPixels = 0;
+
+    for (let y = 16; y < height - 16; y += 12) {
+        for (let x = 16; x < width - 16; x += 12) {
+            const pixel = (y * width + x) * 4;
+            if (data[pixel] !== overview.data[pixel] ||
+                data[pixel + 1] !== overview.data[pixel + 1] ||
+                data[pixel + 2] !== overview.data[pixel + 2]) {
+                changedPixels += 1;
+            }
+        }
+    }
+
+    assert.ok(changedPixels > 100, "The M key did not switch to the level overview");
+    assert.deepEqual(errors, [], "Browser reported runtime errors");
+
     console.log(`Browser render smoke test passed: ${width}x${height}, ${colors.size} colors`);
+    console.log(`Top-down overview passed: ${changedPixels} different samples`);
 } finally {
     await browser.close();
 }
