@@ -194,6 +194,10 @@ O usuário já estabeleceu interesse em sprites de frente, lado direito/esquerdo
 
 **Não criar sons com material protegido de jogos existentes.** A espingarda, chuva, gotejamento e máquinas precisam de efeitos originais ou licenças próprias. Sons de perigo têm precedência sobre música/ambiente. Oferecer ajuste independente de volume para efeitos, música e vozes quando o sistema de áudio suportar.
 
+### Sons do primeiro inimigo — produção inicial
+
+Os quatro efeitos originais do **Trabalhador Convertido** foram produzidos para revisão de gameplay: respiração em loop (idle), ataque com estalo de ombro antecipado (attack), grito de alerta (scream) e morte com colapso metálico (death). Os arquivos são WAV/OGG mono; a integração no C++/WebAssembly ainda é uma etapa futura. Ver [AUD-ENM-001 — especificação detalhada](../audio/enm-001-converted-worker.md). A integração precisa manter a relação com **AUD-L01-006** e **AUD-L01-007** e sincronizar o aviso do golpe com a animação.
+
 ## Narração de interface e acessibilidade
 
 - O aviso de identidade aparece em texto, não apenas em fala.
