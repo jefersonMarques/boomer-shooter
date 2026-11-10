@@ -4,7 +4,7 @@
 
 ## Regra central: cada “coisa” tem fonte própria
 
-Uma personagem, criatura, local, objeto narrativo ou sistema importante deve ter uma **ficha canônica** em arquivo Markdown específico, com ID permanente e links para documentos relacionados. Agrupar objetos menores em um catálogo é aceitável quando não exigirem narrativa ou comportamento próprio; criar ficha ao ganharem importância.
+Uma personagem, criatura, chefe, arma, local, objeto narrativo ou sistema importante deve ter uma **ficha canônica** em arquivo Markdown específico, com ID permanente e links para documentos relacionados. Agrupar objetos menores em um catálogo é aceitável quando não exigirem narrativa ou comportamento próprio; criar ficha ao ganharem importância.
 
 O documento principal [story.md](story.md) descreve o arco e **aponta para as fichas**, evitando manter dezenas de descrições duplicadas.
 
@@ -13,8 +13,8 @@ O documento principal [story.md](story.md) descreve o arco e **aponta para as fi
 - [world/](world/glossary.md): cronologia, regras, facções e glossário.
 - [characters/](characters/protagonist.md): protagonista, antagonistas, aliados e figuras relevantes.
 - [locations/](locations/slaughterhouse.md): áreas e ambientes com história, percurso e arte.
-- [enemies/](enemies/README.md): inimigos, estados e chefes.
-- [objects/](objects/environment-props.md): armas, terminais, transmissor, HUD e props.
+- [enemies/](enemies/README.md): inimigos, estados e [chefes individuais](enemies/bosses.md).
+- [objects/](objects/environment-props.md): terminais, transmissor, HUD, props e [armas em fichas individuais](objects/arsenal.md).
 - [narrative/](narrative/campaign-beats.md): sequência de fases, falas, revelações e roteiro jogável.
 - [art/](art/asset-guidelines.md): requisitos de produção visual.
 
