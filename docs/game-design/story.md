@@ -66,6 +66,8 @@ O Matadouro conta sua história por detalhes: duas pessoas registradas como a me
 
 A tensão se desloca de **sobreviver** para **descobrir por que a rede teme uma única pessoa**. Ao enfrentar o **Superintendente 04**, o jogador descobre que o sistema depende de máquinas e pode ser ferido por ação física. O elevador final abre para uma cidade de cinza sob céu vermelho.
 
+**Documento detalhado da primeira fase:** [L01 — Câmara de Descarte](levels/l01-discard-chamber.md) · [Encontros](levels/l01-encounters.md) · [Arte e som](levels/l01-art-audio.md).
+
 **Arte e implementação:**
 [Matadouro](locations/slaughterhouse.md) · [Worker](enemies/converted-worker.md) · [Sentinela](enemies/industrial-sentinel.md) · [V-12](objects/rupture-v12.md) · [Objetos](objects/environment-props.md) · [BOS-001](enemies/bosses/superintendent-04.md) · [Roteiro jogável L01](narrative/opening-level.md).
 
