@@ -15,7 +15,8 @@ O documento principal [story.md](story.md) descreve o arco e **aponta para as fi
 - [locations/](locations/slaughterhouse.md): áreas e ambientes com história, percurso e arte.
 - [enemies/](enemies/README.md): inimigos, estados e [chefes individuais](enemies/bosses.md).
 - [objects/](objects/environment-props.md): terminais, transmissor, HUD, props e [armas em fichas individuais](objects/arsenal.md).
-- [narrative/](narrative/campaign-beats.md): sequência de fases, falas, revelações e roteiro jogável.
+- [narrative/](narrative/campaign-beats.md): sequência de fases, falas e revelações.
+- [levels/](levels/l01-discard-chamber.md): descrições espaciais jogáveis, encontros, scripts e recursos por fase.
 - [art/](art/asset-guidelines.md): requisitos de produção visual.
 
 ## Template obrigatório para novos registros
